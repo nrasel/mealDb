@@ -5,7 +5,9 @@ const searchFood = () => {
     searchField.value = ''
 
     if(searchText==''){
-        document.getElementById('showP').innerText='please write something'
+        document.getElementById('search-result').innerHTML=`
+        <h1 class="text-center mt-4 text-danger"> please write something</h1>
+        `
     }
     else{
         const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`
@@ -13,19 +15,20 @@ const searchFood = () => {
     
         fetch(url)
             .then(response => response.json())
-            .then(data => displayFood(data.meals))
+            .then(data => displayFood(data.meals,searchText))
     }
 
    
 }
 
-const displayFood = (meals) => {
+const displayFood = (meals,searchText) => {
     // console.log(meals);
     const searchResult = document.getElementById('search-result');
     searchResult.textContent = ''
-    if (meals.length == 0) {
-      document.getElementById('showHeading').innerText='Founds no resluts'
-       
+    if (meals== null) {
+         searchResult.innerHTML=`
+        <h3 class="text-center mt-5 text-danger">${searchText} is Not Found</h3>
+        ` 
     }
     else{
         for (const meal of meals) {
